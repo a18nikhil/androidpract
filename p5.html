@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Practical 5 - Login and Logout Application</title><style>*{box-sizing:border-box} :root{--bg:#10151d;--card:#1c2633;--border:#303c4b;--text:#f2f5f9;--muted:#a7b3c2;--accent:#3ddc84;--hover:#253344;--code:#111923}html.light{--bg:#f4f6f8;--card:#fff;--border:#dce2e8;--text:#17212d;--muted:#526273;--accent:#16834b;--hover:#eef5f0;--code:#f0f3f7}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;line-height:1.65}.container{max-width:750px;margin:auto;padding:24px 16px}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.logo{font-size:22px;font-weight:700;letter-spacing:-.5px}.theme-toggle{display:flex;align-items:center;justify-content:center;width:42px;height:42px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:12px;cursor:pointer}.theme-toggle svg{width:20px;height:20px}.practical{display:flex;align-items:center;gap:16px;padding:20px 16px;margin-bottom:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text)}.practical:hover,.nav-btn:hover{background:var(--hover);border-color:var(--accent)}.number{color:var(--accent);font-size:16px;font-weight:700;min-width:28px}.name{font-size:15px;font-weight:500;line-height:1.5}@media(min-width:768px){.container{padding:45px 24px}.practical{padding:22px 24px}.name{font-size:17px}}h1{font-size:25px;line-height:1.3;margin:0 0 28px}.home-link{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;font-size:17px;font-weight:700}.home-link svg{width:19px;height:19px}.practical-number{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:6px}.section{margin-bottom:30px}h2{font-size:18px;margin:0 0 12px}p{margin:0;font-size:15px}.steps{margin:0;padding:0;list-style:none;counter-reset:step}.steps>li{counter-increment:step;position:relative;padding-left:43px;margin-bottom:20px}.steps>li:before{content:counter(step);position:absolute;left:0;top:1px;width:28px;height:28px;background:var(--card);border:1px solid var(--border);color:var(--accent);border-radius:9px;display:flex;justify-content:center;align-items:center;font-size:13px;font-weight:700}.step-title{font-size:15px;font-weight:700;margin-bottom:5px}.steps p{font-size:14px}.steps p+p{margin-top:7px}.details{margin:8px 0;padding-left:18px;font-size:14px}.details li{margin:3px 0}.inline-code{font-family:Consolas,monospace;font-size:.9em;color:var(--accent);overflow-wrap:anywhere}.editor{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--code)}.tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto}.tab{flex:1;padding:14px 12px;background:var(--card);color:var(--muted);border:0;border-bottom:2px solid transparent;font-size:12px;white-space:nowrap;cursor:pointer}.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:700}.code-toolbar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);gap:8px}.filename{font-size:12px;color:var(--muted);font-family:Consolas,monospace}.copy-btn{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:7px;padding:7px 12px;font-size:12px;cursor:pointer}pre{margin:0;padding:18px 14px;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:12px;line-height:1.7;tab-size:4;color:var(--text)}.token-tag,.token-type{color:#82aaff}.token-attr,.token-keyword{color:#c792ea}.token-string{color:#c3e88d}.token-function{color:#89ddff}html.light .token-tag,html.light .token-type{color:#175bb5}html.light .token-attr,html.light .token-keyword{color:#8b3ab4}html.light .token-string{color:#237a38}html.light .token-function{color:#087b91}.navigation{display:flex;justify-content:space-between;gap:12px;margin-top:38px;padding-top:22px;border-top:1px solid var(--border)}.nav-btn{display:inline-flex;align-items:center;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:13px;font-weight:600}@media(min-width:768px){h1{font-size:30px}p{font-size:16px}pre{font-size:14px}}
+.home-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 14px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--text);text-decoration:none;font-size:14px;font-weight:700}
+.home-btn:hover{border-color:var(--accent)}
+.navigation{justify-content:space-between}
+.section:has(.editor){position:relative}
+.code-title{padding-right:50px}
+.copy-icon{position:absolute;right:0;top:-6px;display:flex;align-items:center;justify-content:center;width:39px;height:39px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer;transition:color .15s,background .15s,transform .15s}
+.copy-icon:hover{border-color:var(--accent)}
+.copy-icon.flash{color:var(--accent);background:var(--hover);transform:scale(1.1)}
+.token-number{color:#f7b267}.token-punctuation{color:#c9d5e5}
+html.light .token-number{color:#9b5800}
+.drawable-note{margin-top:18px;font-size:14px;line-height:1.65}.drawable-note ul{margin:6px 0 0;padding-left:24px}.tabs .tab{min-width:0;padding:13px 6px;font-size:11px}@media(min-width:480px){.tabs .tab{font-size:12px;padding:14px 12px}}
+
+.tabs .tab{flex:0 0 auto;min-width:max-content;padding:14px 16px}.tabs{overflow-x:auto;scrollbar-width:thin}
+</style><script>try{if(localStorage.getItem('androidTheme')==='light')document.documentElement.classList.add('light')}catch(e){}</script></head><body><div class="container"><header class="header"><a aria-label="Home" class="home-btn" href="index.html"><svg aria-hidden="true" fill="none" height="19" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="19"><path d="m3 10 9-7 9 7"></path><path d="M5 9v12h14V9"></path><path d="M9 21v-8h6v8"></path></svg> Home</a><button aria-label="Toggle theme" class="theme-toggle" id="themeToggle" type="button"></button></header><main><div class="practical-number">PRACTICAL 05</div><h1>Login and Logout Application</h1><section class="section"><h2>1. Aim</h2><p>To create a login application to verify username and password. On successful login, redirect to another activity that has a textview to display "welcome user" with logout button. On click of logout button, a dialog should appear with ok and cancel buttons. On click of OK button, go back to the login activity and on click of cancel button, stay on the same activity.</p></section><section class="section"><h2>2. Background Information</h2><p>A login application is used to verify a user's username and password. In this practical, EditText is used to enter login details, and a Button is used to log in. After successful login, Intent opens another activity displaying "Welcome User". The logout button displays an AlertDialog with OK and Cancel options. Kotlin is used to handle login verification, activity navigation, and logout confirmation.</p></section><section class="section"><h2>3. Steps / Procedure</h2><ol class="steps">
+<li><div class="step-title">Create a New Project</div><p>Open Android Studio, click <strong>New Project</strong>, choose <strong>Empty Views Activity</strong>, and click <strong>Next</strong>.</p></li>
+<li><div class="step-title">Enter Project Details</div><p>Set the name to <span class="inline-code">loginapp</span>, package name to <span class="inline-code">com.example.loginapp</span>, language to <strong>Kotlin</strong>, and Minimum SDK to <strong>API 24</strong>. Click <strong>Finish</strong>.</p></li>
+<li><div class="step-title">Create the Login Screen</div><p>Open <span class="inline-code">app → res → layout → activity_main.xml</span>, select <strong>Code</strong>, and replace its contents with the given XML code.</p></li>
+<li><div class="step-title">Add the Login Code</div><p>Open <span class="inline-code">MainActivity.kt</span> in <span class="inline-code">com.example.loginapp</span>. Replace its contents with the given Kotlin code.</p></li>
+<li><div class="step-title">Create the Welcome Screen</div><p>Right-click the app package, choose <strong>New → Activity → Empty Views Activity</strong>, and name it <span class="inline-code">WelcomeActivity</span>. Android Studio creates <span class="inline-code">WelcomeActivity.kt</span> and <span class="inline-code">activity_welcome.xml</span>. If it does not, create the layout file in <span class="inline-code">res/layout</span>.</p></li>
+<li><div class="step-title">Add the Welcome Screen Code</div><p>Replace the contents of <span class="inline-code">activity_welcome.xml</span> and <span class="inline-code">WelcomeActivity.kt</span> with the matching code tabs below. Check that <span class="inline-code">WelcomeActivity</span> is declared in <span class="inline-code">AndroidManifest.xml</span>; Android Studio usually adds it automatically when you create the activity.</p></li>
+<li><div class="step-title">Run the Application</div><p>Select an emulator or connected Android phone and click <strong>Run (▶)</strong>. Enter username <span class="inline-code">admin</span> and password <span class="inline-code">1234</span>, then tap <strong>Login</strong>.</p></li>
+<li><div class="step-title">Test Logout</div><p>On the welcome screen, tap <strong>Logout</strong>. Tap <strong>Cancel</strong> to stay on the page or <strong>OK</strong> to return to the login screen. Try incorrect login details to check the error message.</p></li>
+</ol></section><section class="section"><h2 class="code-title">4. Source Code</h2><button aria-label="Copy source code" class="copy-icon" id="copyBtn" onclick="copyCode()" title="Copy source code" type="button"><svg aria-hidden="true" fill="none" height="19" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="19"><rect height="12" rx="2" width="12" x="8" y="8"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg></button><div class="editor"><div aria-label="Source code files" class="tabs" role="tablist"><button aria-controls="codePanel" aria-selected="true" class="tab active" id="tab-xml" onclick="showCode('xml')" role="tab" type="button">activity_main.xml</button><button aria-controls="codePanel" aria-selected="false" class="tab" id="tab-kotlin" onclick="showCode('kotlin')" role="tab" type="button">MainActivity.kt</button><button aria-controls="codePanel" aria-selected="false" class="tab" id="tab-welcomeXml" onclick="showCode('welcomeXml')" role="tab" type="button">activity_welcome.xml</button><button aria-controls="codePanel" aria-selected="false" class="tab" id="tab-welcomeKt" onclick="showCode('welcomeKt')" role="tab" type="button">WelcomeActivity.kt</button></div><div aria-labelledby="tab-xml" id="codePanel" role="tabpanel"><pre><code id="codeDisplay"></code></pre></div></div></section></main><nav class="navigation"><a class="nav-btn" href="p4.html">← Practical 4</a><a class="nav-btn" href="p6.html">Practical 6 →</a></nav></div><script id="xmlSource" type="text/plain">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp">
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"/>
+
+</LinearLayout>
+</script><script id="kotlinSource" type="text/plain">
+package com.example.loginapp
+
+import android.os.Bundle
+import android.content.Intent
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val user = findViewById<EditText>(R.id.username)
+        val pass = findViewById<EditText>(R.id.password)
+
+        findViewById<Button>(R.id.login).setOnClickListener {
+
+            if (user.text.toString() == "admin" &&
+                pass.text.toString() == "1234") {
+
+                startActivity(
+                    Intent(this, WelcomeActivity::class.java)
+                )
+                finish()
+
+            } else {
+                Toast.makeText(
+                    this,
+                    "Invalid Login",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+}
+</script><script id="welcomeXmlSource" type="text/plain">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome User"
+        android:textSize="26sp"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout"/>
+
+</LinearLayout>
+</script><script id="welcomeKtSource" type="text/plain">
+package com.example.loginapp
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+
+class WelcomeActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_welcome)
+
+        findViewById<Button>(R.id.logout).setOnClickListener {
+
+            AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Do you want to logout?")
+                .setPositiveButton("OK") { _, _ ->
+                    startActivity(
+                        Intent(this, MainActivity::class.java)
+                    )
+                    finish()
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
+    }
+}
+</script><script>const toggle=document.getElementById('themeToggle');const sun='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>';const moon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.985 12.486A9 9 0 0 1 11.514 3.015a9 9 0 1 0 9.471 9.471Z"/></svg>';function renderTheme(){let light=document.documentElement.classList.contains('light');toggle.innerHTML=light?moon:sun;toggle.setAttribute('aria-label',light?'Switch to dark mode':'Switch to light mode')}toggle.addEventListener('click',()=>{document.documentElement.classList.toggle('light');try{localStorage.setItem('androidTheme',document.documentElement.classList.contains('light')?'light':'dark')}catch(e){}renderTheme()});renderTheme();const sources={xml:document.getElementById('xmlSource').textContent.trim(),kotlin:document.getElementById('kotlinSource').textContent.trim(),welcomeXml:document.getElementById('welcomeXmlSource').textContent.trim(),welcomeKt:document.getElementById('welcomeKtSource').textContent.trim()};
+let currentFile='xml';
+const codeDisplay=document.getElementById('codeDisplay'),copyBtn=document.getElementById('copyBtn');
+function escapeHTML(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+function paint(s,cls){return '<span class="'+cls+'">'+escapeHTML(s)+'</span>'}
+function highlightCode(code,language){
+ if(language==='xml'||language==='welcomeXml'){
+  return code.split(/(\"[^\"]*\")/g).map((piece,i)=>{
+   if(i%2)return paint(piece,'token-string');
+   return escapeHTML(piece).replace(/(&lt;\/?[\w.-]+)/g,'<span class="token-tag">$1</span>').replace(/\b([\w.-]+:[\w.-]+)(?==)/g,'<span class="token-attr">$1</span>');
+  }).join('');
+ }
+ const rx=/("(?:\\.|[^"\\])*"|\b(?:package|import|class|override|fun|super|val|var|if|else|return|this|object|true|false|null|when)\b|\b(?:AppCompatActivity|Bundle|MainActivity|WelcomeActivity|Intent|Toast|AlertDialog|String|Int|Boolean|EditText|TextView|Button|RadioGroup|RadioButton)\b|\b(?:onCreate|setContentView|findViewById|println|calculate|setOnClickListener|toString|toDoubleOrNull|setOnCheckedChangeListener|startActivity|finish|makeText|show|setTitle|setMessage|setPositiveButton|setNegativeButton)\b|\b\d+(?:\.\d+)?\b)/g;
+ return code.split(rx).map(piece=>{
+  if(!piece)return '';
+  if(/^"/.test(piece))return paint(piece,'token-string');
+  if(/^(package|import|class|override|fun|super|val|var|if|else|return|this|object|true|false|null|when)$/.test(piece))return paint(piece,'token-keyword');
+  if(/^(AppCompatActivity|Bundle|MainActivity|WelcomeActivity|Intent|Toast|AlertDialog|String|Int|Boolean|EditText|TextView|Button|RadioGroup|RadioButton)$/.test(piece))return paint(piece,'token-type');
+  if(/^(onCreate|setContentView|findViewById|println|calculate|setOnClickListener|toString|toDoubleOrNull|setOnCheckedChangeListener|startActivity|finish|makeText|show|setTitle|setMessage|setPositiveButton|setNegativeButton)$/.test(piece))return paint(piece,'token-function');
+  if(/^\d/.test(piece))return paint(piece,'token-number');
+  return escapeHTML(piece);
+ }).join('');
+}
+function showCode(file){
+ currentFile=file;
+ codeDisplay.innerHTML=highlightCode(sources[file],file);
+ document.querySelectorAll('.tab').forEach(tab=>{
+  const active=tab.id==='tab-'+file;
+  tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active));
+ });
+ document.getElementById('codePanel').setAttribute('aria-labelledby','tab-'+file);
+}
+async function copyCode(){
+ let ok=false;
+ try{await navigator.clipboard.writeText(sources[currentFile]);ok=true}
+ catch(e){const t=document.createElement('textarea');t.value=sources[currentFile];t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();ok=document.execCommand('copy');t.remove()}
+ if(ok){copyBtn.classList.remove('flash');void copyBtn.offsetWidth;copyBtn.classList.add('flash');setTimeout(()=>copyBtn.classList.remove('flash'),420)}
+}
+showCode('xml');</script></body></html>
